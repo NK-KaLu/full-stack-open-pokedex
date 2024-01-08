@@ -6,7 +6,10 @@ module.exports = {
     "node": true,
   },
   "globals": {
-    "process": true
+    "process": true,
+    "cy": "readonly", 
+    "on": "readonly", 
+    "config": "readonly" 
   },
   "extends": [
     "eslint:recommended",
