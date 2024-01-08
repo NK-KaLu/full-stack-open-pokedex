@@ -15,7 +15,6 @@ jobs:
           node-version: '16'
       - name: Install dependencies
         run: npm install
-      - run: npm install eslint eslint-plugin-react  
       - name: Check style
-        run: npm run eslint
+        run: npm run eslint -- --fix
 
