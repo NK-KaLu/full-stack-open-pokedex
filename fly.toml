@@ -11,7 +11,6 @@ primary_region = "arn"
   [build.args]
     NODE_VERSION = "16.19.0"
 
-
 [env]
   PORT = "3000"
 
@@ -32,8 +31,10 @@ primary_region = "arn"
   internal_port = 8080
   processes = ["app"]
 
+
 [[services.concurrency]]
   hard_limit = 1    
+
 
 [[services.tcp_checks]]
   grace_period = "30s"
@@ -49,21 +50,3 @@ primary_region = "arn"
   protocol = "http"
   timeout = 2000
   tls_skip_verify = false
-  [[vm.services]]
-    internal_port = 8080
-    processes = ["app"]
-
-    [vm.services.tcp_checks]
-      grace_period = "30s"
-      interval = "15s"
-      restart_limit = 0
-      timeout = "2s"
-
-    [vm.services.http_checks]
-      interval = 10000
-      grace_period = "30s"
-      method = "get"
-      path = "/health"
-      protocol = "http"
-      timeout = 2000
-      tls_skip_verify = false
