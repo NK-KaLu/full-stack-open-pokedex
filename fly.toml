@@ -13,6 +13,9 @@ primary_region = "arn"
   [build.args]
     NODE_VERSION = "16.19.0"
 
+[services.concurrency]
+  hard_limit = 1    
+
 [env]
   PORT = "3000"
 
