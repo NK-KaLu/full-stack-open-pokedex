@@ -37,15 +37,15 @@ jobs:
           service-id: ${{ secrets.SERVICE_ID }}
           api-key: ${{ secrets.RENDER_API_KEY }}
 
-#  health_check:
-#    name: Healthcheck
-#    runs-on: ubuntu-20.04
-#    needs: deploy 
-#    steps:
-#      - name: Check the deployed service URL
-#        uses: jtalk/url-health-check-action@v3
-#        with:
-#          url: https://full-stack-open-pokedexi121212121212.fly.dev/health
-#          max-attempts: 3
-#          retry-delay: 5s
+  health_check:
+    name: Healthcheck
+    runs-on: ubuntu-20.04
+    needs: deploy 
+    steps:
+      - name: Check the deployed service URL
+        uses: jtalk/url-health-check-action@v3
+        with:
+          url: https://pokeman-service.onrender.com/health
+          max-attempts: 3
+          retry-delay: 5s
           
