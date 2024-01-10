@@ -39,7 +39,7 @@ jobs:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
       - run: flyctl scale count 1
 
-   health_check:
+  health_check:
     name: Healthcheck
     runs-on: ubuntu-20.04
     needs: deploy 
