@@ -3,7 +3,11 @@
 app = "full-stack-open-pokedexi121212121212"
 primary_region = "arn"
 
+[deploy]
+  release_command = "npm run build"
 
+[processes]
+  app = "node app.js"
 
 [build]
   [build.args]
@@ -43,10 +47,4 @@ primary_region = "arn"
   protocol = "http"
   timeout = 2000
   tls_skip_verify = false
-  [services.http_checks.headers]
 
-[deploy]
-  release_command = "npm run build"
-
-[processes]
-  app = "node app.js"
