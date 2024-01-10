@@ -30,7 +30,6 @@ primary_region = "arn"
 [[services]]
   internal_port = 8080
   processes = ["app"]
-  hard_limit = 1
 
 
 [[services.tcp_checks]]
