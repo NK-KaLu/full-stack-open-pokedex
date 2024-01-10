@@ -1,9 +1,6 @@
-# fly.toml app configuration file generated for full-stack-open-pokedexi121212121212-icy-brook-6211 on 2024-01-10T21:59:00+02:00
-#
-# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
-#
 
-app = "full-stack-open-pokedexi121212121212-icy-brook-6211"
+
+app = "full-stack-open-pokedexi121212121212"
 primary_region = "otp"
 kill_signal = "SIGINT"
 kill_timeout = "5s"
