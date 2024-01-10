@@ -9,3 +9,11 @@ app.use(express.static("dist"));
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
 })
+
+
+app.get('/health', (req, res) => {
+  throw 'error...'
+  // eslint-disable-next-line no-unreachable
+
+  res.send('ok')
+})
