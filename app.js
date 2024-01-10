@@ -13,14 +13,14 @@ app.listen(PORT, () => {
 
 
 app.get('/version', (req, res) => {
-  res.send('v13') // change this string to ensure a new version deployed
+  res.send('v14') // change this string to ensure a new version deployed
 })
 
 
 app.get('/health', (req, res) => {
-  throw 'error...'
+  res.status(500).send('Internal Server Error')
   // eslint-disable-next-line no-unreachable
-  res.send('ok')
+  //res.send('ok')
 })
 
 
