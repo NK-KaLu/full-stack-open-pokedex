@@ -1,5 +1,3 @@
-# fly.toml file for full-stack-open-pokedexi121212121212
-
 app = "full-stack-open-pokedexi121212121212"
 primary_region = "arn"
 
@@ -50,4 +48,3 @@ primary_region = "arn"
   protocol = "http"
   timeout = 2000
   tls_skip_verify = false
-
