@@ -40,8 +40,8 @@ jobs:
 
   health_check:
     name: Healthcheck
-      runs-on: ubuntu-20.04
-      steps:
+    runs-on: ubuntu-20.04
+    steps:
       - name: Check the deployed service URL
         uses: jtalk/url-health-check-action@v3
         with:
