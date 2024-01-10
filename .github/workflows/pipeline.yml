@@ -17,18 +17,18 @@ jobs:
         run: npm install
       - name: Check style
         run: npm run eslint -- --fix
-      - run: npm run build
       - run: npm run test
       - name: e2e tests
         uses: cypress-io/github-action@v5
         with:
-          browser: chrome
+          build: npm run build
           start: npm run start-prod
           command: npm run test:e2e
           wait-on: http://localhost:5000
 
   deploy:
     name: Deploy app
+    runs-on: ubuntu-20.04 
     needs: simple_deployment_pipeline
     steps:
       - uses: actions/checkout@v3
@@ -39,6 +39,7 @@ jobs:
 
   health_check:
     name: Healthcheck
+    runs-on: ubuntu-20.04
     needs: deploy 
     steps:
       - name: Check the deployed service URL
