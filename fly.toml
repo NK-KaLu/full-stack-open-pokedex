@@ -31,11 +31,6 @@ primary_region = "arn"
   internal_port = 8080
   processes = ["app"]
 
-[services.concurrency]
-  type = connections
-  hard_limit = 1
-  soft_limit = 1
-
 [[services.tcp_checks]]
   grace_period = "30s"
   interval = "15s"
