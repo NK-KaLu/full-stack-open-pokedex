@@ -34,9 +34,14 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: superfly/flyctl-actions/setup-flyctl@master
-      - run: flyctl deploy --remote-only
+      - run: flyctl deploy --remote-only --strategy immediate   
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+
+  health_check:
+    name: Healthcheck
+    runs-on: ubuntu-20.04
+    steps:
       - name: Check the deployed service URL
         uses: jtalk/url-health-check-action@v3
         with:
