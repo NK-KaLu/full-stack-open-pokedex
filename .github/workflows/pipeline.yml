@@ -7,7 +7,7 @@ on:
   pull_request:
     branches: [master]
     types: [opened, synchronize]
-    
+
 jobs:
   simple_deployment_pipeline:
     runs-on: ubuntu-20.04
@@ -33,6 +33,7 @@ jobs:
     name: Deploy app
     runs-on: ubuntu-20.04 
     needs: simple_deployment_pipeline
+    if: ${{ github.event_name == 'push' }}
     steps:
       - name: Deploy to production 
         uses: johnbeynon/render-deploy-action@v0.0.8
