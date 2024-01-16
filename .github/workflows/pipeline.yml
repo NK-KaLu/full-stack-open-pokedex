@@ -19,7 +19,7 @@ jobs:
       - name: Install dependencies
         run: npm install
       - name: Check style
-        run: npm run eslint -- --fix
+      - run: npm run eslint -- --fix
       - run: npm run test
       - name: e2e tests
         uses: cypress-io/github-action@v5
@@ -44,8 +44,7 @@ jobs:
   tag_release:  
     name: Tag release
     runs-on: ubuntu-20.04 
-    needs: simple_deployment_pipeline
-    needs: deploy
+    needs: simple_deployment_pipeline deploy
     if: ${{ github.event_name == 'push' }}
     steps:      
       - name: Bump version and push tag
