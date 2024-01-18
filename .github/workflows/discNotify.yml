@@ -57,3 +57,10 @@ jobs:
 
           details: Build failed
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}        
+
+
+    dummy_job:
+      runs-on: ubuntu-20.04
+      steps:
+        - name: Dummy step
+          run: echo "This is a dummy job"        
