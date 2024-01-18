@@ -87,14 +87,16 @@ jobs:
     steps:
       - name: Logging
         run: |
-          echo "${{toJSON(github.event)}}"
+          echo "${{toJSON(github.event.base.user.login)}}"
+          echo "${{toJSON(github.event.base.repo.pushed_at)}}"
+          echo "${{toJSON(github.event.base.body)}}"
 
 #      - name: Send Discord notification on failure
 #      uses: rjstone/discord-webhook-notify@v1
 #        with:
 #          severity: error
 #          details: |
-#            Build failed for commit [${{ github.sha }}](${{ github.event.compare }})
+#            Build failed for commit [${{ github.sha }}]
 #            **Commit details:**
 #            - **Message:** ${{ github.event.commits[0].message }}
 #            - **Committer:** ${{ github.event.commits[0].author.name }}
