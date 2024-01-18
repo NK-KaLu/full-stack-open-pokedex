@@ -101,7 +101,7 @@ jobs:
             **Commit details:**
             - **Message:**  ${{ github.event.pull_request.title }}
             - **Committer:** ${{ github.event.pull_request.user.login }}
-            - **Commit date:** $merge_commit_date
+            - **Commit date:** '$merge_commit_date'
           text: Build failed !
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
 # useless with push while using render.. could be maybe edited on another file to check outside pushing
