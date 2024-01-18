@@ -89,7 +89,8 @@ jobs:
         run: |
           echo "Merge Commit Message: ${{ github.event.pull_request.title }}"
           echo "Author Name: ${{ github.event.pull_request.user.login }}"
-          echo "Merge Commit Date: $(TZ='Europe/Helsinki' date -d "${{ github.event.pull_request.updated_at }}" +%Y-%m-%d\ %H:%M:%S)"
+          merge_commit_date="$(TZ='Europe/Helsinki' date -d "${{ github.event.pull_request.updated_at }}" +%Y-%m-%d\ %H:%M:%S)"
+          echo "Merge Commit Date: $merge_commit_date"
 
       - name: Send Discord notification on failure
         uses: rjstone/discord-webhook-notify@v1
@@ -100,7 +101,7 @@ jobs:
             **Commit details:**
             - **Message:**  ${{ github.event.pull_request.title }}
             - **Committer:** ${{ github.event.pull_request.user.login }}
-            - **Commit date:** $(TZ='Europe/Helsinki' date -d "${{ github.event.pull_request.updated_at }}" +%Y-%m-%d\ %H:%M:%S)"
+            - **Commit date:** $merge_commit_date
           text: Build failed !
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
 # useless with push while using render.. could be maybe edited on another file to check outside pushing
