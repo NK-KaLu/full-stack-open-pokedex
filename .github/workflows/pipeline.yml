@@ -43,7 +43,7 @@ jobs:
     needs: simple_deployment_pipeline
     outputs:
       id: deployment-status
-      if: github.event_name == 'push' && !contains(join(github.event.commits.*.message, ' '), '#skip')
+    if: github.event_name == 'push' && !contains(join(github.event.commits.*.message, ' '), '#skip')
     steps:
       - name: Deploy to production
         id: deploy
@@ -80,7 +80,7 @@ jobs:
     steps:
       - name: Check deployment status
         id: check_status
-        run: echo "::set-output name=deployment-status::${{ needs.deploy.outputs.deploymentstatus }}"
+        run: echo "::set-output name=deployment-status::${{ needs.deploy.outputs.deployment-status }}"
       - name: Debugging
         run: |
           echo "GitHub Event Name: ${{ github.event_name }}"
@@ -113,17 +113,17 @@ jobs:
     steps:
       - name: Check status
         id: check_status
-        run: echo "::set-output name=pipeline-status::${{ needs.simple_deployment_pipeline.outputs.pipelinestatus }}"
+        run: echo "::set-output name=pipeline-status::${{ needs.simple_deployment_pipeline.outputs.pipeline-status }}"
       - name: Send Discord notification on failure
         uses: rjstone/discord-webhook-notify@v1
-        if: steps.pipeline.outcome == 'failure'
+        if: steps.simple_deployment_pipeline.outcome == 'failure'
         with:
           severity: error
           description:
             Build failed for commit [${GITHUB_SHA::8}](${{ github.event.compare }})
             **Commit details:**
             - **Message:** ${github.event.commits[0].message}
-            - **Committer:**
+            - **Committer:** ${github.event.commits[0].committer.name}
             - **Commit date:** ${github.event.commits[0].timestamp}
           details: Build failed
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
