@@ -82,7 +82,6 @@ jobs:
 
   notify_discord_simple_deployment_pipeline:
     runs-on: ubuntu-20.04
-    needs: simple_deployment_pipeline
     if: ${{ needs.simple_deployment_pipeline.outcome == 'failure' }}
     steps:
       - name: Send Discord notification on failure
