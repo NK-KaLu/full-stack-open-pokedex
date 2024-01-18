@@ -91,19 +91,18 @@ jobs:
           echo "Author Name: ${{ github.event.pull_request.user.login }}"
           echo "Merge Commit Date: ${{ github.event.pull_request.updated_at }}"
 
-#      - name: Send Discord notification on failure
-#      uses: rjstone/discord-webhook-notify@v1
-#        with:
-#          severity: error
-#          details: |
-#            Build failed for commit [${{ github.sha }}]
-#            **Commit details:**
-#            - **Message:** ${{ github.event.commits[0].message }}
-#            - **Committer:** ${{ github.event.commits[0].author.name }}
-#            - **Commit date:** ${{ github.event.commits[0].timestamp }}
-#          description: Build failed
-#          webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
-
+      - name: Send Discord notification on failure
+        uses: rjstone/discord-webhook-notify@v1
+        with:
+          severity: error
+          details: |
+            Build failed for commit [${{ github.sha }}]
+            **Commit details:**
+            - **Message:**  ${{ github.event.pull_request.title }}"
+            - **Committer:** ${{ github.event.pull_request.user.login }}"
+            - **Commit date:** ${{ github.event.pull_request.updated_at }}"
+          description: Build failed
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
 # useless with push while using render.. could be maybe edited on another file to check outside pushing
 # health_check:
 #    name: Healthcheck
