@@ -89,7 +89,7 @@ jobs:
         run: |
           echo "Merge Commit Message: ${{ github.event.pull_request.title }}"
           echo "Author Name: ${{ github.event.pull_request.user.login }}"
-          echo "Merge Commit Date:  $(date -d "${{ github.event.pull_request.updated_at }}" --utc +%Y-%m-%d\ %H:%M:%S)
+          echo "Merge Commit Date: $(date -d "${{ github.event.pull_request.updated_at }}" --utc +'%Y-%m-%d %H:%M:%S')"
 
 #      - name: Send Discord notification on failure
 #        uses: rjstone/discord-webhook-notify@v1
