@@ -71,12 +71,12 @@ jobs:
         if: ${{ failure() }}
         with:
           severity: error
-          description:
-            Build failed for commit [${GITHUB_SHA::8}](${{ github.event.compare }})
+          description: |
+            Build failed for commit [${{ github.sha }}](${{ github.event.compare }})
             **Commit details:**
-            - **Message:** ${github.event.commits[0].message}
-            - **Committer:** ${github.event.commits[0].committer.name}
-            - **Commit date:** ${github.event.commits[0].timestamp}
+            - **Message:** ${{ github.event.head_commit.message }}
+            - **Committer:** ${{ github.event.head_commit.committer.name }}
+            - **Commit date:** ${{ github.event.head_commit.timestamp }}
           details: Build failed
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
 
@@ -89,12 +89,12 @@ jobs:
         uses: rjstone/discord-webhook-notify@v1
         with:
           severity: error
-          description:
-            Build failed for commit [${GITHUB_SHA::8}](${{ github.event.compare }})
+          description: |
+            Build failed for commit [${{ github.sha }}](${{ github.event.compare }})
             **Commit details:**
-            - **Message:** ${github.event.commits[0].message}
-            - **Committer:** ${github.event.commits[0].committer.name}
-            - **Commit date:** ${github.event.commits[0].timestamp}
+            - **Message:** ${{ github.event.head_commit.message }}
+            - **Committer:** ${{ github.event.head_commit.committer.name }}
+            - **Commit date:** ${{ github.event.head_commit.timestamp }}
           details: Build failed
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
 # useless with push while using render.. could be maybe edited on another file to check outside pushing
