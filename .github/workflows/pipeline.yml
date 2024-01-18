@@ -11,8 +11,6 @@ on:
 jobs:
   simple_deployment_pipeline:
     runs-on: ubuntu-20.04
-    outputs:
-      id: pipeline-status
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
@@ -30,19 +28,10 @@ jobs:
           start: npm run start-prod
           command: npm run test:e2e
           wait-on: http://localhost:5000
-      - name: Set pipeline status
-        run: echo "::set-output name=pipeline-status::success"
-        if: steps.simple_deployment_pipeline.outcome == 'success'
-      - name: Set pipeline status on failure
-        run: echo "::set-output name=pipeline-status::failure"
-        if: steps.simple_deployment_pipeline.outcome == 'failure'
-
   deploy:
     name: Deploy app
     runs-on: ubuntu-20.04
     needs: simple_deployment_pipeline
-    outputs:
-      id: deployment-status
     if: github.event_name == 'push' && !contains(join(github.event.commits.*.message, ' '), '#skip')
     steps:
       - name: Deploy to production
@@ -51,12 +40,6 @@ jobs:
         with:
           service-id: ${{ secrets.SERVICE_ID }}
           api-key: ${{ secrets.RENDER_API_KEY }}
-      - name: Set deployment status
-        run: echo "::set-output name=deployment-status::success"
-        if: steps.deploy.outcome == 'success'
-      - name: Set deployment status on failure
-        run: echo "::set-output name=deployment-status::failure"
-        if: steps.deploy.outcome == 'failure'
 
   tag_release:
     name: Tag release
@@ -75,15 +58,9 @@ jobs:
     runs-on: ubuntu-20.04
     needs: deploy
     steps:
-      - name: Check deployment status
-        id: check_status
-        run: echo "::set-output name=deployment-status::${{ job.status }}"
-      - name: Debugging
-        run: |
-          echo "Job status: ${{ needs.deploy.outputs.status }}"
       - name: Send Discord notification on success
         uses: rjstone/discord-webhook-notify@v1
-        if: steps.status.outputs.status == 'success'
+        if: ${{ success() }}
         with:
           severity: info
           description: to https://pokeman-service.onrender.com/
@@ -91,7 +68,7 @@ jobs:
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
       - name: Send Discord notification on failure
         uses: rjstone/discord-webhook-notify@v1
-        if: steps.status.outputs.status == 'failure'
+        if: ${{ failure() }}
         with:
           severity: error
           description:
@@ -107,12 +84,9 @@ jobs:
     runs-on: ubuntu-20.04
     needs: simple_deployment_pipeline
     steps:
-      - name: Check status
-        id: check_status
-        run: echo "::set-output name=pipeline-status::${{ needs.simple_deployment_pipeline.outputs.pipeline-status }}"
       - name: Send Discord notification on failure
         uses: rjstone/discord-webhook-notify@v1
-        if: steps.simple_deployment_pipeline.outcome == 'failure'
+        if: ${{ failure() }}
         with:
           severity: error
           description:
