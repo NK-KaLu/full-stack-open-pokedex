@@ -87,7 +87,7 @@ jobs:
     steps:
       - name: Logging
         run: |
-          echo "${{toJSON(github.event.head_commit.message)}}"
+          echo "${{toJSON(github.event.head_body)}}"
 
 #      - name: Send Discord notification on failure
 #      uses: rjstone/discord-webhook-notify@v1
