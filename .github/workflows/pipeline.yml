@@ -74,16 +74,16 @@ jobs:
           description: |
             Build failed for commit [${{ github.sha }}](${{ github.event.compare }})
             **Commit details:**
-            - **Message:** ${{ github.event.head_commit.message }}
-            - **Committer:** ${{ github.event.head_commit.committer.name }}
-            - **Commit date:** ${{ github.event.head_commit.timestamp }}
+            - **Message:** ${{ github.event.commits[0].message }}
+            - **Committer:** ${{ github.event.commits[0].author.name }}
+            - **Commit date:** ${{ github.event.commits[0].timestamp }}
           details: Build failed
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
 
   notify_discord_simple_deployment_pipeline:
     runs-on: ubuntu-20.04
     needs: simple_deployment_pipeline
-    if: ${{ needs.simple_deployment_pipeline.outcome == 'failure' }}
+    if: ${{ always() && contains(needs.*.result, 'failure') }}
     steps:
       - name: Send Discord notification on failure
         uses: rjstone/discord-webhook-notify@v1
