@@ -82,7 +82,8 @@ jobs:
 
   notify_discord_simple_deployment_pipeline:
     runs-on: ubuntu-20.04
-    if: ${{ needs.simple_deployment_pipeline.outcome == 'failure' }}
+    needs: simple_deployment_pipeline
+    if: ${{ always() && contains(needs.*.result, 'failure') }}
     steps:
       - name: Send Discord notification on failure
         uses: rjstone/discord-webhook-notify@v1
