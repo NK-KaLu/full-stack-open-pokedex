@@ -11,6 +11,8 @@ on:
 jobs:
   simple_deployment_pipeline:
     runs-on: ubuntu-20.04
+    outputs:
+      id: pipeline-status
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
@@ -28,18 +30,32 @@ jobs:
           start: npm run start-prod
           command: npm run test:e2e
           wait-on: http://localhost:5000
+      - name: Set pipeline status
+        run: echo "::set-output name=pipeline-status::success"
+        if: steps.simple_deployment_pipeline.outcome == 'success'
+      - name: Set pipeline status on failure
+        run: echo "::set-output name=pipeline-status::failure"
+        if: steps.simple_deployment_pipeline.outcome == 'failure'
 
   deploy:
     name: Deploy app
     runs-on: ubuntu-20.04 
-    needs: simple_deployment_pipeline
+    outputs:
+      id: deployment-status
     if: github.event_name == 'push' && !contains(join(github.event.commits.*.message, ' '), '#skip')
     steps:
       - name: Deploy to production 
+        id: deploy
         uses: johnbeynon/render-deploy-action@v0.0.8
         with:
           service-id: ${{ secrets.SERVICE_ID }}
           api-key: ${{ secrets.RENDER_API_KEY }}
+      - name: Set deployment status
+        run: echo "::set-output name=deployment-status::success"
+        if: steps.deploy.outcome == 'success'
+      - name: Set deployment status on failure
+        run: echo "::set-output name=deployment-status::failure"
+        if: steps.deploy.outcome == 'failure'
 
   tag_release:  
     name: Tag release
@@ -53,6 +69,17 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DEFAULT_BUMP: patch
+
+
+
+
+
+
+
+
+
+
+
 
 
 
