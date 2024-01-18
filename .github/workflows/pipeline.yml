@@ -77,7 +77,7 @@ jobs:
       steps:
         - name: Check deployment status
           id: check_status
-          run: echo "::set-output name=deployment-status::${{ needs.tag_release.outputs.deployment-status }}"
+          run: echo "::set-output name=deployment-status::${{ needs.deploy.outputs.deployment-status }}"
         - name: Send Discord notification on success
           uses: rjstone/discord-webhook-notify@v1
           if: steps.check_status.outputs.deployment-status == 'success'
@@ -106,7 +106,7 @@ jobs:
     steps:
       - name: Check status
         id: check_status
-        run: echo "::set-output name=pipeline-status::${{ needs.tag_release.outputs.pipeline-status }}"
+        run: echo "::set-output name=pipeline-status::${{ needs.simple_deployment_pipeline.outputs.pipelinestatus }}"
       - name: Send Discord notification on failure
         uses: rjstone/discord-webhook-notify@v1
         if: steps.check_status.outputs.pipeline-status == 'failure'
