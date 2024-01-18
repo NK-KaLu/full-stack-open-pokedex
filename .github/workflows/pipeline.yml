@@ -72,34 +72,33 @@ jobs:
           DEFAULT_BUMP: patch
 
   notify_discord_deploy:
-      runs-on: ubuntu-20.04
-      needs: deploy
-      steps:
-        - name: Check deployment status
-          id: check_status
-          run: echo "::set-output name=deployment-status::${{ needs.deploy.outputs.deployment-status }}"
-        - name: Send Discord notification on success
-          uses: rjstone/discord-webhook-notify@v1
-          if: steps.deploy.outcome == 'success'
-          with:
-            severity: info
-            description: to https://pokeman-service.onrender.com/
-            details: Deployment Succeeded!
-            webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
-        - name: Send Discord notification on failure
-          uses: rjstone/discord-webhook-notify@v1
-          if: steps.deploy.outcome == 'failure'
-          with:
-            severity: error
-            description: Build failed for commit [${GITHUB_SHA::8}](${{ github.event.compare }})
-              **Commit details:**
-              - **Message:** ${github.event.commits[0].message}
-              - **Committer:** ${github.event.commits[0].committer.name}
-              - **Commit date:** ${github.event.commits[0].timestamp}
-            details: Build failed
-            webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
-                    webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
-
+    runs-on: ubuntu-20.04
+    needs: deploy
+    steps:
+      - name: Check deployment status
+      id: check_status
+      run: echo "::set-output name=deployment-status::${{ needs.deploy.outputs.deployment-status }}"
+      - name: Send Discord notification on success
+        uses: rjstone/discord-webhook-notify@v1
+        if: steps.deploy.outcome == 'success'
+        with:
+          severity: info
+          description: to https://pokeman-service.onrender.com/
+          details: Deployment Succeeded!
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
+      - name: Send Discord notification on failure
+        uses: rjstone/discord-webhook-notify@v1
+        if: steps.deploy.outcome == 'failure'
+        with:
+          severity: error
+          description: Build failed for commit [${GITHUB_SHA::8}](${{ github.event.compare }})
+            **Commit details:**
+            - **Message:** ${github.event.commits[0].message}
+            - **Committer:** ${github.event.commits[0].committer.name}
+            - **Commit date:** ${github.event.commits[0].timestamp}
+          details: Build failed
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
+                    
   notify_discord_simple_deployment_pipeline:
     runs-on: ubuntu-20.04
     needs: simple_deployment_pipeline
@@ -109,7 +108,7 @@ jobs:
       run: echo "::set-output name=pipeline-status::${{ needs.simple_deployment_pipeline.outputs.pipeline-status }}"
       - name: Send Discord notification on failure
         uses: rjstone/discord-webhook-notify@v1
-         if: steps.pipeline.outcome == 'failure'
+        if: steps.pipeline.outcome == 'failure'
         with:
           severity: error
           description: Build failed for commit [${GITHUB_SHA::8}](${{ github.event.compare }})
@@ -117,7 +116,6 @@ jobs:
             - **Message:** ${github.event.commits[0].message}
             - **Committer:** ${github.event.commits[0].committer.name}
             - **Commit date:** ${github.event.commits[0].timestamp}
-
           details: Build failed
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}        
 
