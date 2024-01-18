@@ -71,13 +71,13 @@ jobs:
         if: ${{ failure() }}
         with:
           severity: error
-          description: |
-            Build failed for commit [${{ github.sha }}](${{ github.event.compare }})
+          details: |
+            Build failed for commit [${{ github.sha }}]
             **Commit details:**
             - **Message:** ${{ github.event.commits[0].message }}
             - **Committer:** ${{ github.event.commits[0].author.name }}
             - **Commit date:** ${{ github.event.commits[0].timestamp }}
-          details: Build failed
+          description: Build failed
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
 
   notify_discord_simple_deployment_pipeline:
@@ -85,18 +85,23 @@ jobs:
     needs: simple_deployment_pipeline
     if: ${{ always() && contains(needs.*.result, 'failure') }}
     steps:
-      - name: Send Discord notification on failure
-        uses: rjstone/discord-webhook-notify@v1
-        with:
-          severity: error
-          description: |
-            Build failed for commit [${{ github.sha }}](${{ github.event.compare }})
-            **Commit details:**
-            - **Message:** ${{ github.event.commits[0].message }}
-            - **Committer:** ${{ github.event.commits[0].author.name }}
-            - **Commit date:** ${{ github.event.commits[0].timestamp }}
-          details: Build failed
-          webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
+      - name: Logging
+        run: |
+          echo "${{toJSON(github.event)}}"
+
+#      - name: Send Discord notification on failure
+#      uses: rjstone/discord-webhook-notify@v1
+#        with:
+#          severity: error
+#          details: |
+#            Build failed for commit [${{ github.sha }}](${{ github.event.compare }})
+#            **Commit details:**
+#            - **Message:** ${{ github.event.commits[0].message }}
+#            - **Committer:** ${{ github.event.commits[0].author.name }}
+#            - **Commit date:** ${{ github.event.commits[0].timestamp }}
+#          description: Build failed
+#          webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
+
 # useless with push while using render.. could be maybe edited on another file to check outside pushing
 # health_check:
 #    name: Healthcheck
