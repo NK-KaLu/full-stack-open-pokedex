@@ -1,3 +1,6 @@
+# link of the other repository  
+## https://github.com/NK-KaLu/CI-CD-pipeline-anecdotes
+
 # Full Stack open CI/CD
 
 This repository is used for the CI/CD module of the Full stack open course
